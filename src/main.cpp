@@ -22,7 +22,6 @@ int main() {
 
     // Exit action fn:
     cmds["exit"] = [&exit](std::vector<std::string>& args) {
-        std::cout << "Exiting the shell..." << std::endl;
         exit = true;
         };
 
