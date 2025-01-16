@@ -2,6 +2,22 @@
 #include <bits/stdc++.h>
 #include <sstream>
 #include <functional>
+#include<filesystem>
+
+std::string get_path(std::string command) {
+    std::string path_env = std::getenv("PATH");
+    std::stringstream ss(path_env);
+    std::string path; 
+
+    while (!ss.eof()) {
+        getline(ss, path, ':');
+        string abs_path = path + '/' + command;
+        if (filesystem::exists(abs_path)) {
+            return abs_path;
+        }
+    }
+    return "";
+}
 
 int main() {
     // Flush after every std::cout / std:cerr
@@ -43,7 +59,13 @@ int main() {
             std::cout << args[0] << " is a shell builtin" << std::endl;
         }
         else {
-            std::cout << args[0] << ": not found" << std::endl;
+            std::string path = get_path(args[0]);
+            if (path.empty()) {
+                std::cout << args[0] << " not found\n";
+            }
+            else {
+                std::cout << args[0]<< " is " << path << std::endl;
+            }
         }
         };
 
