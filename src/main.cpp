@@ -108,11 +108,11 @@ int main() {
             }
             else {
                 std::string command_with_full_path = cmdPath;
-                for (int argn = 1; argn < args.size(); argn++)
+              /*  for (int argn = 1; argn < args.size(); argn++)
                 {
                     command_with_full_path += " ";
                     command_with_full_path += args[argn];
-                }
+                }*/
                 const char* command_ptr = command_with_full_path.c_str();
                 system(command_ptr);
                 continue;
