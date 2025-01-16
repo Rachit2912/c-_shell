@@ -21,7 +21,7 @@ int main() {
     std::map<std::string, std::function<void(std::vector<std::string>&)>> cmds;
 
     // Exit action fn:
-    cmds["exit 0"] = [&exit](std::vector<std::string>& args) {
+    cmds["exit"] = [&exit](std::vector<std::string>& args) {
         std::cout << "Exiting the shell..." << std::endl;
         exit = true;
         };
