@@ -6,12 +6,16 @@
 
 std::string get_path(std::string command) {
     std::string path_env = std::getenv("PATH");
+    if (path_env == nullptr)
+    {
+        return "";
+    }
     std::stringstream ss(path_env);
     std::string path; 
 
     while (!ss.eof()) {
-        getline(ss, path, ':');
-        string abs_path = path + '/' + command;
+        std::getline(ss, path, ':');
+        std::string abs_path = path + '/' + command;
         if (filesystem::exists(abs_path)) {
             return abs_path;
         }
