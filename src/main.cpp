@@ -15,7 +15,7 @@ std::string get_path(std::string command) {
 
     while (!ss.eof()) {
         std::getline(ss, path, ':');
-        std::string abs_path = path + '/' + command;
+        std::string abs_path = path + '/' + command;    
         if (std::filesystem::exists(abs_path)) {
             return abs_path;
         }
@@ -102,7 +102,21 @@ int main() {
             cmds[cmd](args);
         }
         else {  // Else invalid cmd => not found:
+            std::string cmdPath = get_path(cmd); // checking for exe files 
+            if (cmdPath == "") {
             std::cout << cmd << ": command not found" << std::endl;
+            }
+            else {
+                std::string command_with_full_path = cmdPath;
+                for (int argn = 1; argn < args.size(); argn++)
+                {
+                    command_with_full_path += " ";
+                    command_with_full_path += args[argn];
+                }
+                const char* command_ptr = command_with_full_path.c_str();
+                system(command_ptr);
+                continue;
+            }
         }
 
     }
