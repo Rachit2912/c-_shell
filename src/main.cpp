@@ -1,70 +1,68 @@
 #include <iostream>
-#include<bits/stdc++.h>
-#include<sstream>
+#include <bits/stdc++.h>
+#include <sstream>
+#include <functional>
 
 int main() {
-  // Flush after every std::cout / std:cerr
-  std::cout << std::unitbuf;
-  std::cerr << std::unitbuf;
+    // Flush after every std::cout / std:cerr
+    std::cout << std::unitbuf;
+    std::cerr << std::unitbuf;
 
-  //first prompt : 
-  std::cout << "$ ";
+    // First prompt:
+    std::cout << "$ ";
 
-  //defining input taken from user 
-  std::string input;
+    // Defining input taken from user
+    std::string input;
 
-  //exit flag for REPL :
-  bool exit = false;
+    // Exit flag for REPL
+    bool exit = false;
 
-  //maps for storing the cmd-action pairs : 
-  std::map<std::string, std::function<void(std::vector<std::string>&)>> cmds;
-  
-  // exit action fn. : 
-	cmds["exit 0"] = [](std::vector<std::string>& args) {
-		std::cout << "exiting the shell..." << std::endl;
-		exit = true;
-	}
-		
-	// echo action fn. :
-		cmds["echo"] = [](std::vector > <std::string>& args) {
-				for (auto& arg : args)
-				{
-					std::cout << arg << " ";
-				}
-				std::cout << std::endl;
-		}
+    // Maps for storing the cmd-action pairs
+    std::map<std::string, std::function<void(std::vector<std::string>&)>> cmds;
 
+    // Exit action fn:
+    cmds["exit 0"] = [&exit](std::vector<std::string>& args) {
+        std::cout << "Exiting the shell..." << std::endl;
+        exit = true;
+        };
 
-  
-  //REPL for shell : 
-  while (!exit) {
+    // Echo action fn:
+    cmds["echo"] = [](std::vector<std::string>& args) {
+        for (const auto& arg : args) {
+            std::cout << arg << " ";
+        }
+        std::cout << std::endl;
+        };
 
-	  // getting the i/p from the user : 
-	  std::getline(std::cin, input);
+    // REPL for shell:
+    while (!exit) {
+        // Getting the input from the user:
+        std::getline(std::cin, input);
 
-	  // stringstream for efficiently differentiating the cmds and args : 
-	  std::stringstream ss(input);
-	  std::string cmd;
-	  std::vector<std::string> args;
+        // Stringstream for efficiently differentiating the cmds and args:
+        std::stringstream ss(input);
+        std::string cmd;
+        std::vector<std::string> args;
 
-	  // extracting the cmd through the stream : 
-	  ss >> cmd;
+        // Extracting the cmd through the stream:
+        ss >> cmd;
 
-	  // extracting the args from the stream : 
-	  std::string arg;
-	  while (ss >> arg) {
-		  args.push_back(arg);
-	  }
+        // Extracting the args from the stream:
+        std::string arg;
+        while (ss >> arg) {
+            args.push_back(arg);
+        }
 
-	  // valid cmd. found => perform its action : 
-	  if (cmds.find(cmd) != cmds.end()) {
-		  cmds[cmd](args);
-	  }
-	  else //else invalid cmd => not found :
-	  {
-		  std::cout << cmd << ": command not found" << std::endl;
-	  }
+        // Valid cmd found => perform its action:
+        if (cmds.find(cmd) != cmds.end()) {
+            cmds[cmd](args);
+        }
+        else {  // Else invalid cmd => not found:
+            std::cout << cmd << ": command not found" << std::endl;
+        }
 
-	  std::cout << "$";
-  }
+        std::cout << "$ ";
+    }
+
+    return 0;
 }
