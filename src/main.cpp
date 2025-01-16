@@ -17,7 +17,7 @@ int main() {
     // Maps for storing the cmd-action pairs
     std::map<std::string, std::function<void(std::vector<std::string>&)>> cmds;
 
-    // Exit action fn:
+    // exit action fn:
     cmds["exit"] = [&exit](std::vector<std::string>& args) {
         if (args.size() == 1 && args[0] == "0") {
             exit = true;
@@ -28,13 +28,24 @@ int main() {
         }
         };
 
-    // Echo action fn:
+    // echo action fn:
     cmds["echo"] = [](std::vector<std::string>& args) {
         for (const auto& arg : args) {
             std::cout << arg << " ";
         }
         std::cout << std::endl;
         };
+
+
+    // type action fn. : 
+    cmds["type"] = [&cmds](std::vector<std::string>& args) {
+        if (args.size() == 1 && cmds.find(args[0]) != cmds.end()) {
+            std::cout << args[0] << " is a shell builtin" << std::endl;
+        }
+        else {
+            std::cout << args[0] << ": not found" << std::endl;
+        }
+        }
 
     // REPL for shell:
     while (!exit) {
