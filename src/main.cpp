@@ -23,6 +23,7 @@ int main() {
     // Exit action fn:
     cmds["exit"] = [&exit](std::vector<std::string>& args) {
         exit = true;
+        return 0;
         };
 
     // Echo action fn:
