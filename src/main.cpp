@@ -8,9 +8,6 @@ int main() {
     std::cout << std::unitbuf;
     std::cerr << std::unitbuf;
 
-    // First prompt:
-    std::cout << "$ ";
-
     // Defining input taken from user
     std::string input;
 
@@ -22,8 +19,13 @@ int main() {
 
     // Exit action fn:
     cmds["exit"] = [&exit](std::vector<std::string>& args) {
-        exit = true;
-        return 0;
+        if (args.size() == 1 && args[0] == "0") {
+            exit = true;
+            std::exit(0); // Exit program iff "exit 0" is typed
+        }
+        else {
+            std::cout << "exit "<<args[0]<<" : command not found." << std::endl;
+        }
         };
 
     // Echo action fn:
@@ -36,6 +38,11 @@ int main() {
 
     // REPL for shell:
     while (!exit) {
+
+        // prompt sign :
+        std::cout << "$ ";
+
+
         // Getting the input from the user:
         std::getline(std::cin, input);
 
@@ -61,7 +68,6 @@ int main() {
             std::cout << cmd << ": command not found" << std::endl;
         }
 
-        std::cout << "$ ";
     }
 
     return 0;
