@@ -45,7 +45,7 @@ int main() {
         else {
             std::cout << args[0] << ": not found" << std::endl;
         }
-        }
+        };
 
     // REPL for shell:
     while (!exit) {
