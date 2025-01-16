@@ -16,7 +16,7 @@ std::string get_path(std::string command) {
     while (!ss.eof()) {
         std::getline(ss, path, ':');
         std::string abs_path = path + '/' + command;
-        if (filesystem::exists(abs_path)) {
+        if (std::filesystem::exists(abs_path)) {
             return abs_path;
         }
     }
