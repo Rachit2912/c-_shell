@@ -6,7 +6,7 @@
 
 std::string get_path(std::string command) {
     std::string path_env = std::getenv("PATH");
-    if (path_env == nullptr)
+    if (path_env == NULL)
     {
         return "";
     }
