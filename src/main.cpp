@@ -12,7 +12,7 @@ int main() {
     std::string input;
 
     // Exit flag for REPL
-    //bool exit = false;
+    bool exit = false;
 
     // Maps for storing the cmd-action pairs
     std::map<std::string, std::function<void(std::vector<std::string>&)>> cmds;
@@ -20,6 +20,7 @@ int main() {
     // Exit action fn:
     cmds["exit"] = [&exit](std::vector<std::string>& args) {
         if (args.size() == 1 && args[0] == "0") {
+            exit = true;
             std::exit(0); // Exit program iff "exit 0" is typed
         }
         else {
@@ -36,7 +37,7 @@ int main() {
         };
 
     // REPL for shell:
-    while (true) {
+    while (!exit) {
 
         // prompt sign :
         std::cout << "$ ";
