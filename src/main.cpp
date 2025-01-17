@@ -53,7 +53,7 @@ int main() {
         std::string result;
         for (auto& arg : args) result += arg + " ";
         if (result[0] == '\'') {
-            result = result.substr(1, result.size() - 1);
+            result = result.substr(1, result.size() - 2);
         }
         std::cout << result << std::endl;
         };
