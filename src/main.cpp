@@ -201,14 +201,14 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
 
             if (ip[i] == '\\') {
                 // Handle backslash escaping
-                if (i + 1 < ip.size()) {
-                    result += ip[i + 1];
-                    i += 2; // Skip the backslash and the escaped character
-                }
-                else {
+                //if (i + 1 < ip.size()) {
+                //    result += ip[i + 1];
+                //    i += 2; // Skip the backslash and the escaped character
+                //}
+                //else {
                     result += ip[i];
                     i++;
-                }
+                //}
             }
             else if (ip[i] == '\'' || ip[i] == '\"') {
                 // Toggle quote state
