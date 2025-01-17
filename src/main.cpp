@@ -294,22 +294,44 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
     else {
         std::string output, fileName;
         bool withOne = (input.find("1>")!=-1);
-        if (withOne)
-        {
-            output = input.substr(6, idx-9);
+        bool withTwo = (input.find("2>") != -1);
+        if (withTwo) {
+
+            output = input.substr(6, idx - 9);
             fileName = input.substr(idx + 2);
+            std::string cmd = "echo " + output;
+            system(cmd.c_str());
+
+
+            std::ofstream outFile(fileName); // Open the file to which you want to redirect the output
+            std::streambuf* coutbuf = std::cout.rdbuf(); // Save old buffer
+            std::cout.rdbuf(outFile.rdbuf()); // Redirect std::cout to outFile
+            std::cout << "";
+            std::cout.rdbuf(coutbuf);
+            outFile.close();
+            //std::cout << result << std::endl;
         }
         else
         {
-            output = input.substr(6,idx-2);
-            fileName = input.substr(idx + 2);
-        }
 
-        std::ofstream outputFile(fileName);
-        if (outputFile.is_open()) {
-            outputFile << output << std::endl;
-            outputFile.close();
+            if (withOne)
+            {
+                output = input.substr(6, idx - 9);
+                fileName = input.substr(idx + 2);
+            }
+            else
+            {
+                output = input.substr(6, idx - 2);
+                fileName = input.substr(idx + 2);
+            }
+
+            std::ofstream outputFile(fileName);
+            if (outputFile.is_open()) {
+                outputFile << output << std::endl;
+                outputFile.close();
+            }
         }
+        
     }
     };
 
