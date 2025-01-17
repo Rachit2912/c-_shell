@@ -57,7 +57,7 @@ int main() {
             std::cout << input.substr(6, input.length() - 7) << std::endl;
         }
         else {
-            for (int i = 1; i < args.size(); i++) {
+            for (int i = 0; i < args.size(); i++) {
                 if (!args[i].empty()) std::cout << args[i] << " ";
             }
             std::cout << std::endl;
