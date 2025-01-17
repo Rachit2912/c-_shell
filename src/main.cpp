@@ -5,6 +5,23 @@
 #include<filesystem>
 
 std::string get_path(std::string command) {
+    std::string newCommand;
+    std::string chFront, chBack;
+    if (command.front() == '\'' || command.front() == '\"') {
+        if (command.size() > 0 && (command.front() == '\'' || command.front() == '\"'))
+            newCommand = command.substr(1);
+        if (command.size() > 0 && (command.back() == '\'' || command.back() == '\"'))
+            newCommand = newCommand.substr(0, newCommand.size() - 1);
+        chFront = command.front();
+        chBack = command.back();
+    }
+    else {
+        newCommand = command;
+        chFront = "";
+        chBack = "";
+    }
+
+
     std::string path_env = std::getenv("PATH");
     if (path_env == "")
     {
@@ -15,13 +32,28 @@ std::string get_path(std::string command) {
 
     while (!ss.eof()) {
         std::getline(ss, path, ':');
-        std::string abs_path = path + '/' + command;    
+        std::string abs_path = path + '/' + newCommand;    
         if (std::filesystem::exists(abs_path)) {
-            return abs_path;
+            return (path + "/" + chFront + newCommand + chBack);
         }
+
     }
     return "";
 }
+
+void handleExecutablePath(std::string command, std::string argument)
+{
+    std::string path = get_path(command);
+    if (path.empty())
+        std::cerr << command << ": command not found" << std::endl;
+    else
+    {
+        std::string execCommand = "exec " + path + " " + argument;
+        std::system(execCommand.c_str());
+    }
+}
+
+
 
 int main() {
     // Flush after every std::cout / std:cerr
@@ -309,18 +341,19 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
         };  
 
     // cat action fn. :
-    cmds["cat"] = [&input](std::vector<std::string>& args) {
-       /* for (auto& arg : args)
-        {
-            if (!arg.empty() && arg[0] == '\'') {
-                arg = arg.substr(1, arg.size() - 2);
-            }
-        }
+    cmds["cat"] = [&input](std::vector<std::string>& args){
+        /* for (auto& arg : args)
+         {
+             if (!arg.empty() && arg[0] == '\'') {
+                 arg = arg.substr(1, arg.size() - 2);
+             }
+         }
 
-        std::string final_cmd = "cat";
-        for (const auto& arg : args) {
-            final_cmd += " " + arg;
-        }*/
+         std::string final_cmd = "cat";
+         for (const auto& arg : args) {
+             final_cmd += " " + arg;
+         }*/
+        //std::cerr << "cat is here" << std::endl;
         system(input.c_str());
         };
 
@@ -338,6 +371,7 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
         std::stringstream ss(input);
         std::string cmd;
         std::vector<std::string> args;
+        
 
         // Extracting the cmd through the stream:
         ss >> cmd;
@@ -348,28 +382,53 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
             args.push_back(arg);
         }
 
+        int i = 1;
+        bool quotesOn = false;
+        if (input.front() == '\'' || input.front() == '\"')
+        {
+            quotesOn = true;
+            char ch = input.front();
+            while (i < input.size() && input[i] != ch)
+                i++;
+        }
+        int separator = input.find(" ", i);
+        if (separator == -1)
+        {
+            separator = input.size();
+        }
+        std::string command = separator == input.size() ? input : input.substr(0, separator);
+        std::string argument = separator < input.size() - 1 ? input.substr(separator + 1) : "";
+
+
+
         // Valid cmd found => perform its action:
         if (cmds.find(cmd) != cmds.end()) {
             cmds[cmd](args);
         }
         else {  // Else invalid cmd => not found:
-            std::string cmdPath = get_path(cmd); // checking for exe files 
-            if (cmdPath == "") {
-            std::cout << cmd << ": command not found" << std::endl;
-            }
-            else {
-                std::string command_with_full_path = cmdPath;
-                std::filesystem::path path(command_with_full_path);
-                command_with_full_path = path.filename();
-
-                for (int argn = 0; argn < args.size(); argn++)
-                {
-                    command_with_full_path += " ";
-                    command_with_full_path += args[argn];
+            if (!quotesOn) {
+                std::string cmdPath = get_path(command); // checking for exe files 
+                if (cmdPath == "") {
+                    std::cout << cmd << ": command not found" << std::endl;
                 }
-                const char* command_ptr = command_with_full_path.c_str();
-                system(command_ptr);
-                continue;
+                else {
+                    std::string command_with_full_path = cmdPath;
+                    std::filesystem::path path(command_with_full_path);
+                    command_with_full_path = path.filename();
+
+                    for (int argn = 0; argn < args.size(); argn++)
+                    {
+                        command_with_full_path += " ";
+                        command_with_full_path += args[argn];
+                    }
+                    const char* command_ptr = command_with_full_path.c_str();
+                    system(command_ptr);
+                    continue;
+                }
+            }
+            else
+            {
+                handleExecutablePath(command, argument);
             }
         }
 
