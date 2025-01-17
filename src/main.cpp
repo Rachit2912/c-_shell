@@ -51,6 +51,9 @@ int main() {
     // echo action fn:
     cmds["echo"] = [](std::vector<std::string>& args) {
             for (const auto& arg : args) {
+                if (arg[0] == '\'' || arg[0] == '"') {
+                    arg = arg.substr(1, arg.size() - 2);
+                }
                 std::cout << arg << " ";
             }
             std::cout << std::endl;
