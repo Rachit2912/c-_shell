@@ -82,7 +82,7 @@ int main() {
 
     //cd action fn. : 
     cmds["cd"] = [](std::vector<std::string>& args) {
-        if (args[0] == '/' && std::filesystem::exists(args[0])) {
+        if (args[0][0] == '/' && std::filesystem::exists(args[0])) {
             std::filesystem::current_path(args[0]);
         }
         else {
