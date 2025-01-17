@@ -49,15 +49,18 @@ int main() {
         };
 
     // echo action fn:
-    cmds["echo"] = [](std::vector<std::string>& args) {
-        std::string result;
-        for (auto& arg : args) result += arg + " ";
-        result.pop_back();
-
-        if (result[0] == '\'' || result[0]=='"') {
-            result = result.substr(1, result.size() - 2);
+    cmds["echo"] = [&input](std::vector<std::string>& args) {
+        if (input[5] == '\'') {
+            cout << input.substr(6, input.length() - 7) << endl;
         }
-        std::cout << result << std::endl;
+        else if (input[5] == '\"') {
+            cout << input.substr(6, input.length() - 7) << endl;
+        }
+        else {
+            for (int i = 1; i < args.size(); i++) {
+                if (!args[i].empty()) cout << args[i] << " ";
+            }cout << endl;
+        }
         };
 
 
