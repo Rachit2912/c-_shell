@@ -87,8 +87,8 @@ int main() {
             if (std::filesystem::exists(target)) {
                 std::filesystem::current_path(target);
             }
-            if (chdir(absolute_path.c_str()) == -1) {
-                std::cout << "cd: " << path << ": No such file or directory" << std::endl;
+            if (chdir(target.c_str()) == -1) {
+                std::cout << "cd: " << target << ": No such file or directory" << std::endl;
             }
         }
 
