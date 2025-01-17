@@ -50,40 +50,35 @@ int main() {
 
     // echo action fn:
     cmds["echo"] = [&input](std::vector<std::string>& args) {
-        std::string result,temp;
-        bool inside_single_quotes = false;
 
-        // Iterate over the input string character by character
-        for (size_t i = 5; i < input.length(); i++) {
-            char c = input[i];
+        std::string ip = input;
 
-            // If we encounter a single quote, toggle the flag
-            if (c == '\'' || c == '"') {
-                inside_single_quotes = !inside_single_quotes;
-                // Skip adding the quote itself
-                continue;
-            }
+        bool first = true; // Flag to handle space after the first argument
 
-            // If inside quotes, accumulate the characters
-            if (inside_single_quotes) {
-                temp += c;
-            }
-
-            else {
-                // When not inside quotes, add the space (or regular characters)
-                if (c != ' ' || !result.empty()) { // Don't add leading space
-                    result += c;
+        // Check if the first argument starts with a quote (single or double)
+        if (ip[5] == '\'' || ip[5] == '\"') {
+            for (size_t i = 5; i < ip.length();) {
+                if (ip[i] == '\'' || ip[i] == '\"') {
+                    ip.erase(i, 1);
                 }
+                else { i++; }
             }
         }
-
-        // Add the remaining temp (if any) after processing all parts
-        if (!temp.empty()) {
-            if (!result.empty()) result += " ";
-            result += temp;
+        else {
+            // If no quotes, just collapse spaces between words
+            bool first = false;
+            for (size_t i = 5; i < ip.length();) {
+                if (ip[i] == ' ') {
+                    if (!first) { first = true; i++; continue; }
+                    if (first)
+                    {
+                        ip.erase(i, 1);
+                    }
+                }
+                else { i++; }
+            }
         }
-
-        std::cout << result << std::endl;
+        std::cout << ip.substr(5) << std::endl;
         };
 
 
