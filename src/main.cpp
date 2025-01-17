@@ -50,18 +50,40 @@ int main() {
 
     // echo action fn:
     cmds["echo"] = [&input](std::vector<std::string>& args) {
-        if (input[5] == '\'') {
-            std::cout << input.substr(6, input.length() - 7) << std::endl;
-        }
-        else if (input[5] == '\"') {
-            std::cout << input.substr(6, input.length() - 7) << std::endl;
-        }
-        else {
-            for (int i = 0; i < args.size(); i++) {
-                if (!args[i].empty()) std::cout << args[i] << " ";
+        std::string result,temp;
+        bool inside_single_quotes = false;
+
+        // Iterate over the input string character by character
+        for (size_t i = 5; i < input.length(); i++) {
+            char c = input[i];
+
+            // If we encounter a single quote, toggle the flag
+            if (c == '\'' || c == '"') {
+                inside_single_quotes = !inside_single_quotes;
+                // Skip adding the quote itself
+                continue;
             }
-            std::cout << std::endl;
+
+            // If inside quotes, accumulate the characters
+            if (inside_single_quotes) {
+                temp += c;
+            }
+
+            else {
+                // When not inside quotes, add the space (or regular characters)
+                if (c != ' ' || !result.empty()) { // Don't add leading space
+                    result += c;
+                }
+            }
         }
+
+        // Add the remaining temp (if any) after processing all parts
+        if (!temp.empty()) {
+            if (!result.empty()) result += " ";
+            result += temp;
+        }
+
+        std::cout << result << std::endl;
         };
 
 
