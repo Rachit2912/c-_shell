@@ -51,15 +51,10 @@ int main() {
     // echo action fn:
     cmds["echo"] = [](std::vector<std::string>& args) {
         std::string result;
-        for (auto& arg : args) {
-            if (!arg.empty() && arg[0] == '\'' && arg.back() == '\'') {
-                result += arg.substr(1, arg.size() - 2) + " "; 
-            }
-            else {
-                result += arg + " ";
-            }
+        for (auto& arg : args) result += arg + " ";}
+        if (result[0] == '\'') {
+            result = result.substr(1, result.size() - 1);
         }
-        result.pop_back();
         std::cout << result << std::endl;
         };
 
