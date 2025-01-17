@@ -99,20 +99,6 @@ int main() {
             if (chdir(cwd.c_str()) == -1)
                 std::cout << "cd: " << path << ": No such file or directory" << std::endl;
         }
-
-        else {
-            std::string path = get_path(command);
-            if (path.empty())
-                std::cout << command << ": command not found" << std::endl;
-            else
-            {
-                std::string command = path + " " + arguments;
-                int result = system(command.c_str());
-                if (result == -1) {
-                    std::cerr << "Error executing the command" << std::endl;
-                }
-            }
-        }
         };  
 
     // REPL for shell:
