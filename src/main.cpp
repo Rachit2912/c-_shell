@@ -52,6 +52,7 @@ int main() {
     cmds["echo"] = [](std::vector<std::string>& args) {
         std::string result;
         for (auto& arg : args) result += arg + " ";
+        result.pop_back();
         if (result[0] == '\'') {
             result = result.substr(1, result.size() - 2);
         }
