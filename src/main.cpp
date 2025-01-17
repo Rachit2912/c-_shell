@@ -50,11 +50,6 @@ int main() {
 
     // echo action fn:
     cmds["echo"] = [](std::vector<std::string>& args) {
-        if ((args[0][0] == '\'') || (args[0][0] == '\"')) {
-            std::cout << (args[0].substr(1)) << std::endl;
-        }
-
-        else {
             for (const auto& arg : args) {
                 std::cout << arg << " ";
             }
