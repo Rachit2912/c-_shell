@@ -73,6 +73,12 @@ int main() {
         }
         };
 
+    // pwd action fn. : 
+    cmds["pwd"] = [](std::vector<std::string>& args) {
+        std::string cmd_path = std::filesystem::current_path();
+        std::cout << cmd_path << "\n";
+        };
+
     // REPL for shell:
     while (!exit) {
 
@@ -110,6 +116,7 @@ int main() {
                 std::string command_with_full_path = cmdPath;
                 std::filesystem::path path(command_with_full_path);
                 command_with_full_path = path.filename();
+
                 for (int argn = 0; argn < args.size(); argn++)
                 {
                     command_with_full_path += " ";
