@@ -49,70 +49,213 @@ int main() {
         };
 
     // echo action fn:
-    cmds["echo"] = [&input](std::vector<std::string>& args) {
+    //cmds["echo"] = [&input](std::vector<std::string>& args) {
 
-        std::string ip = input;
-        std::string params = input.substr(input.find(' ') + 1,input.size() - input.find(' ') + 1);
-        std::string result = "";
+    //    std::string ip = input;
+    //    std::string params = input.substr(input.find(' ') + 1,input.size() - input.find(' ') + 1);
+    //    std::string result = "";
 
-        //bool first = true; // Flag to handle space after the first argument
+    //    //bool first = true; // Flag to handle space after the first argument
 
-        // Check if the first argument starts with a quote (single or double)
-        if (ip[5] == '\'') {
-            for (size_t i = 5; i < ip.length();) {
-                if (ip[i] == '\'' || ip[i] == '\"') {
-                    ip.erase(i, 1);
+    //    // Check if the first argument starts with a quote (single or double)
+    //    if (ip[5] == '\'') {
+    //        for (size_t i = 5; i < ip.length();) {
+    //            if (ip[i] == '\'' || ip[i] == '\"') {
+    //                ip.erase(i, 1);
+    //            }
+    //            else { i++; }
+    //        }
+    //        std::cout << ip.substr(5) << std::endl;
+    //    }
+    //    //else {
+    //    //    // If no quotes, just collapse spaces between words
+    //    //    bool first = false;
+    //    //    for (size_t i = 5; i < ip.length();) {
+    //    //        if (ip[i] == ' ') {
+    //    //            if (!first) { first = true; i++; continue; }
+    //    //            if (first)
+    //    //            {
+    //    //                ip.erase(i, 1);
+    //    //            }
+    //    //        }
+    //    //        else { i++; first = false; }
+    //    //    }
+    //    //}
+
+
+    //  /*  if ((params.at(0) == '\'') && (params.at(params.size() - 1) == '\''))
+    //    {
+    //        result = params.substr(1, params.size() - 1);
+    //        result = result.substr(0, result.size() - 1);
+    //    }*/
+    //    else
+    //    {
+    //        bool space_found = false;
+    //        bool apos_start = false;
+    //        for (auto c : params)
+    //        {
+    //            if (c == ' ' && !apos_start) // For any spaces not enclosed by apostrophes
+    //            {
+    //                if (!space_found)
+    //                    space_found = true;
+    //                else
+    //                    continue; // More spaces -> ignore them
+    //            }
+    //            else if (space_found)
+    //                space_found = false; // No more spaces to handle
+    //            if (c == '\"')
+    //            {
+    //                apos_start = !apos_start;
+    //                continue;
+    //            }
+    //            result += c;
+    //        }
+    //    std::cout << result << std::endl;
+    //    }
+    //    };
+
+    //cmds["echo"] = [&input](std::vector<std::string>& args) {
+    //    std::string ip = input;
+    //    std::string params = input.substr(input.find(' ') + 1, input.size() - input.find(' ') + 1);
+    //    std::string result = "";
+
+    //    if (ip[5] == '\'' || ip[5] == '\"') {
+    //        bool apos_start = false; // Tracks if inside quotes
+    //        for (size_t i = 0; i < ip.size();) {
+    //            bool f = true;
+    //            while (ip[i] == ' ' && !apos_start) {
+    //                if (f) {
+    //                    result += " ";
+    //                    f = false;
+    //                }
+    //                i++;
+    //            }
+
+    //            if (ip[i] == '\\') {
+    //                // Handle backslash escaping
+    //                if (i + 1 < ip.size()) {
+    //                    result += ip[i + 1];
+    //                    i += 2; // Skip the backslash and the next character
+    //                }
+    //                else {
+    //                    result += ip[i];
+    //                    i++;
+    //                }
+    //            }
+    //            else if (ip[i] == '\'' || ip[i] == '\"') {
+    //                apos_start = !apos_start;
+    //                i++;
+    //            }
+    //            else {
+    //                result += ip[i];
+
+    //                i++;
+    //            }
+    //        }
+    //        std::cout << result.substr(5) << std::endl;
+    //    }
+    //    else {
+    //        bool space_found = false;
+    //        for (size_t i = 0; i < params.size(); ++i) {
+    //            if (params[i] == '\\') {
+    //                // Handle backslash escaping
+    //                if (i + 1 < params.size()) {
+    //                    result += params[i + 1];
+    //                    i++; // Skip the backslash
+    //                }
+    //            }
+    //            else if (params[i] == ' ') {
+    //                if (!space_found) {
+    //                    result += ' ';
+    //                    space_found = true;
+    //                }
+    //            }
+    //            else {
+    //                result += params[i];
+    //                space_found = false;
+    //            }
+    //        }
+    //        std::cout << result << std::endl;
+    //    }
+    //    };
+
+
+cmds["echo"] = [&input](std::vector<std::string>& args) {
+    std::string ip = input;
+    std::string params = input.substr(input.find(' ') + 1, input.size() - input.find(' ') + 1);
+    std::string result = "";
+
+    if (ip[5] == '\'' || ip[5] == '\"') {
+        bool apos_start = false; // Tracks if inside quotes
+        char current_quote = '\0'; // Tracks the type of quote (' or ")
+        for (size_t i = 0; i < ip.size();) {
+            bool f = true;
+            // Skip consecutive spaces outside quotes
+            while (ip[i] == ' ' && !apos_start) {
+                if (f) {
+                    result += " ";
+                    f = false;
                 }
-                else { i++; }
+                i++;
             }
-            std::cout << ip.substr(5) << std::endl;
+
+            if (ip[i] == '\\') {
+                // Handle backslash escaping
+                if (i + 1 < ip.size()) {
+                    result += ip[i + 1];
+                    i += 2; // Skip the backslash and the escaped character
+                }
+                else {
+                    result += ip[i];
+                    i++;
+                }
+            }
+            else if (ip[i] == '\'' || ip[i] == '\"') {
+                // Toggle quote state
+                if (!apos_start) {
+                    apos_start = true;
+                    current_quote = ip[i];
+                }
+                else if (ip[i] == current_quote) {
+                    apos_start = false;
+                }
+                else { result += ip[i]; }
+                i++; // Move past the quote
+            }
+            else {
+                result += ip[i];
+                f = true;
+                i++;
+            }
         }
-        //else {
-        //    // If no quotes, just collapse spaces between words
-        //    bool first = false;
-        //    for (size_t i = 5; i < ip.length();) {
-        //        if (ip[i] == ' ') {
-        //            if (!first) { first = true; i++; continue; }
-        //            if (first)
-        //            {
-        //                ip.erase(i, 1);
-        //            }
-        //        }
-        //        else { i++; first = false; }
-        //    }
-        //}
-
-
-      /*  if ((params.at(0) == '\'') && (params.at(params.size() - 1) == '\''))
-        {
-            result = params.substr(1, params.size() - 1);
-            result = result.substr(0, result.size() - 1);
-        }*/
-        else
-        {
-            bool space_found = false;
-            bool apos_start = false;
-            for (auto c : params)
-            {
-                if (c == ' ' && !apos_start) // For any spaces not enclosed by apostrophes
-                {
-                    if (!space_found)
-                        space_found = true;
-                    else
-                        continue; // More spaces -> ignore them
+        std::cout << result.substr(5) << std::endl;
+    }
+    else {
+        bool space_found = false;
+        for (size_t i = 0; i < params.size(); ++i) {
+            if (params[i] == '\\') {
+                // Handle backslash escaping
+                if (i + 1 < params.size()) {
+                    result += params[i + 1];
+                    i++; // Skip the backslash
                 }
-                else if (space_found)
-                    space_found = false; // No more spaces to handle
-                if (c == '\"')
-                {
-                    apos_start = !apos_start;
-                    continue;
-                }
-                result += c;
             }
+            else if (params[i] == ' ') {
+                if (!space_found) {
+                    result += ' ';
+                    space_found = true;
+                }
+            }
+            else {
+                result += params[i];
+                space_found = false;
+            }
+        }
         std::cout << result << std::endl;
-        }
-        };
+    }
+    };
+
+
 
 
     // type action fn. : 
