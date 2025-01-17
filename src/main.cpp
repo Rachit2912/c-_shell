@@ -54,7 +54,6 @@ int main() {
                 std::cout << arg << " ";
             }
             std::cout << std::endl;
-        }
         };
 
 
