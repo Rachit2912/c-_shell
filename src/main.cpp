@@ -75,7 +75,7 @@ int main() {
                         ip.erase(i, 1);
                     }
                 }
-                else { i++; }
+                else { i++; first = false; }
             }
         }
         std::cout << ip.substr(5) << std::endl;
@@ -83,8 +83,10 @@ int main() {
 
 
     // type action fn. : 
-    cmds["type"] = [&cmds](std::vector<std::string>& args) {
-        if (args.size() == 1 && cmds.find(args[0]) != cmds.end()) {
+    std::set<std::string> builtIns = { "echo","type","pwd","exit" };
+    cmds["type"] = [&builtIns](std::vector<std::string>& args) {
+
+        if (args.size() == 1 && builtIns.find(args[0]) != builtIns.end()) {
             std::cout << args[0] << " is a shell builtin" << std::endl;
         }
         else {
@@ -131,8 +133,8 @@ int main() {
         };  
 
     // cat action fn. :
-    cmds["cat"] = [](std::vector<std::string>& args) {
-        for (auto& arg : args)
+    cmds["cat"] = [&input](std::vector<std::string>& args) {
+       /* for (auto& arg : args)
         {
             if (!arg.empty() && arg[0] == '\'') {
                 arg = arg.substr(1, arg.size() - 2);
@@ -142,8 +144,8 @@ int main() {
         std::string final_cmd = "cat";
         for (const auto& arg : args) {
             final_cmd += " " + arg;
-        }
-        system(final_cmd.c_str());
+        }*/
+        system(input.c_str());
         };
 
     // REPL for shell:
