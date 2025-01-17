@@ -88,7 +88,7 @@ int main() {
         else {
             std::cout << "cd: " << args[0] << ": No such file or directory" << std::endl;
         }
-        }
+        };  
 
     // REPL for shell:
     while (!exit) {
