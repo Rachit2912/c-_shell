@@ -79,6 +79,17 @@ int main() {
         std::cout << cmd_path << "\n";
         };
 
+
+    //cd action fn. : 
+    cmds["cd"] = [](std::vector<std::string>& args) {
+        if (args[0] == '/' && std::filesystem::exists(args[0])) {
+            std::filesystem::current_path(args[0]);
+        }
+        else {
+            std::cout << "cd: " << args[0] << ": No such file or directory" << std::endl;
+        }
+        }
+
     // REPL for shell:
     while (!exit) {
 
