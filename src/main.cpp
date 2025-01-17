@@ -99,6 +99,11 @@ int main() {
             if (chdir(cwd.c_str()) == -1)
                 std::cout << "cd: " << target<< ": No such file or directory" << std::endl;
         }
+
+        else if (target[0] == '~') {
+            chdir(getenv("HOME"));
+        }
+
         };  
 
     // REPL for shell:
