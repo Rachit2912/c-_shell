@@ -82,11 +82,36 @@ int main() {
 
     //cd action fn. : 
     cmds["cd"] = [](std::vector<std::string>& args) {
-        if (args[0][0] == '/' && std::filesystem::exists(args[0])) {
-            std::filesystem::current_path(args[0]);
+        std::string target = args[0];
+        if (target[0] == '/') {
+            if (std::filesystem::exists(target)) {
+                std::filesystem::current_path(target);
+            }
+            if (chdir(absolute_path.c_str()) == -1) {
+                std::cout << "cd: " << path << ": No such file or directory" << std::endl;
+            }
         }
+
+        else if(target[0] == '.'){
+            std::string cwd = std::filesystem::current_path().string();
+            std::string dir = cwd + '/' + path;
+            cwd = std::filesystem::canonical(dir);
+            if (chdir(cwd.c_str()) == -1)
+                std::cout << "cd: " << path << ": No such file or directory" << std::endl;
+        }
+
         else {
-            std::cout << "cd: " << args[0] << ": No such file or directory" << std::endl;
+            std::string path = get_path(command);
+            if (path.empty())
+                std::cout << command << ": command not found" << std::endl;
+            else
+            {
+                std::string command = path + " " + arguments;
+                int result = system(command.c_str());
+                if (result == -1) {
+                    std::cerr << "Error executing the command" << std::endl;
+                }
+            }
         }
         };  
 
