@@ -50,10 +50,16 @@ int main() {
 
     // echo action fn:
     cmds["echo"] = [](std::vector<std::string>& args) {
-        for (const auto& arg : args) {
-            std::cout << arg << " ";
+        if ((args[0][0] == '\'') || (args[0][0] == '\"')) {
+            std::cout << (args[0].substr(1)) << std::endl;
         }
-        std::cout << std::endl;
+
+        else {
+            for (const auto& arg : args) {
+                std::cout << arg << " ";
+            }
+            std::cout << std::endl;
+        }
         };
 
 
@@ -103,8 +109,23 @@ int main() {
         else if (target[0] == '~') {
             chdir(getenv("HOME"));
         }
-
         };  
+
+    // cat action fn. :
+    cmds["cat"] = [](std::vector<std::string>& args) {
+        for (auto& arg : args)
+        {
+            if (!arg.empty() && arg[0] == '\'') {
+                arg = arg.substr(1, arg.size() - 2);
+            }
+        }
+
+        std::string final_cmd = "cat";
+        for (const auto& arg : args) {
+            final_cmd += " " + arg;
+        }
+        system(final_cmd.c_str());
+        };
 
     // REPL for shell:
     while (!exit) {
