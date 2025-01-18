@@ -459,6 +459,18 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
         system(input.c_str());
         };
 
+    // about action fn. :
+    cmds["RJ"] = [](std::vector<std::string>& args) {
+        std::cout << "Welcome to shellB\n";
+        std::cout << "a lightweight custom shell completely written in C++\n";
+        std::cout << "offers a basic command-line interface with essential functionality\n";
+        std::cout << "ideal for developers and tech enthusiasts alike\n";
+        std::cout << "Built with a passion for technology\n";
+        std::cout << "Developed by a tech enthusiast : Rachit Joshi\n";
+        std::cout << "Enjoy using shellB, Thank You!\n";
+        };
+
+
     // REPL for shell:
     while (!exit) {
 
