@@ -443,12 +443,20 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
             std::string cwd = std::filesystem::current_path().string();
             std::string dir = cwd + '/' + target;
             cwd = std::filesystem::canonical(dir);
-            if (chdir(cwd.c_str()) == -1)
-                std::cout << "cd: " << target<< ": No such file or directory" << std::endl;
+                if (chdir(cwd.c_str()) == -1)
+                    std::cout << "cd: " << target << ": No such file or directory" << std::endl;
         }
 
         else if (target[0] == '~') {
             chdir(getenv("HOME"));
+        }
+        else {
+            if (std::filesystem::exists(target)) {
+                std::filesystem::current_path(target);
+            }
+            else{
+                std::cout << "cd: " << target << ": No such file or directory" << std::endl;
+            }
         }
         };  
 
