@@ -61,6 +61,16 @@ int main() {
     std::cout << std::unitbuf;
     std::cerr << std::unitbuf;
 
+    //intro:
+   std::cout<<R"(
+      _            _  _   ____
+ ___ | |__    ___ | || | | __ )
+/ __|| '_ \  / _ \| || | |  _ \
+\__ \| | | ||  __/| || | | |_) |
+|___/|_| |_| \___||_||_| |____/
+)";
+    std::cout << "type RJ for more details!\n";
+
     // Defining input taken from user
     std::string input;
 
@@ -461,13 +471,21 @@ cmds["echo"] = [&input](std::vector<std::string>& args) {
 
     // about action fn. :
     cmds["RJ"] = [](std::vector<std::string>& args) {
-        std::cout << "Welcome to shellB\n";
-        std::cout << "a lightweight custom shell completely written in C++\n";
-        std::cout << "offers a basic command-line interface with essential functionality\n";
-        std::cout << "ideal for developers and tech enthusiasts alike\n";
-        std::cout << "Built with a passion for technology\n";
-        std::cout << "Developed by a tech enthusiast : Rachit Joshi\n";
-        std::cout << "Enjoy using shellB, Thank You!\n";
+        std::cout << R"(
+      _            _  _   ____
+ ___ | |__    ___ | || | | __ )
+/ __|| '_ \  / _ \| || | |  _ \
+\__ \| | | ||  __/| || | | |_) |
+|___/|_| |_| \___||_||_| |____/
+)" << std::endl;
+
+
+        std::cout << "\ta lightweight custom shell completely written in C++\n";
+        std::cout << "\toffers a basic command-line interface with essential functionality\n";
+        std::cout << "\tideal for developers and tech enthusiasts alike\n";
+        std::cout << "\tBuilt with a passion for technology\n";
+        std::cout << "\tDeveloped by a tech enthusiast : Rachit Joshi\n";
+        std::cout << "\tEnjoy using shellB, Thank You!\n";
         };
 
 
