@@ -8,6 +8,6 @@
 
 # Exit early if any commands fail
 set -e
-
+echo ${VCPKG_ROOT}
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 cmake --build ./build

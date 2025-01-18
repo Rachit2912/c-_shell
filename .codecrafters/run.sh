@@ -1,4 +1,5 @@
-#!/bin/sh
+
+#
 #
 # This script is used to run your program on CodeCrafters
 # 
@@ -9,4 +10,4 @@
 # Exit early if any commands fail
 set -e
 
-exec ./build/shell "$@"
+exec ../your_program.sh "$@"
