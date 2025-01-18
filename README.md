@@ -1,5 +1,5 @@
 # shellB
-### A basic command-line tool (REPL) that supports executing commands, handling executable paths, and redirecting output to files. It demonstrates various functionalities such as interpreting commands, executing system commands, and handling input/output redirection.
+A basic command-line tool (REPL) that supports executing commands, handling executable paths, and redirecting output to files. It demonstrates various functionalities such as interpreting commands, executing system commands, and handling input/output redirection.
 
 ## Features
 - **Command Execution**: Allows you to execute commands from your system's PATH.
