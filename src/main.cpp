@@ -76,6 +76,9 @@ int main() {
             exit = true;
             std::exit(0); // Exit program iff "exit 0" is typed
         }
+        else if (args.size() == 0) {
+            std::cout << "exit : command not found." << std::endl;
+        }
         else {
             std::cout << "exit "<<args[0]<<" : command not found." << std::endl;
         }

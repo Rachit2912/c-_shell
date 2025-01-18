@@ -23,5 +23,5 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program runs locally
 # - Edit .codecrafters/run.sh to change how your program runs remotely
-# exec ./build/shell "$@"
-exec ./your_program.sh "$@"
+exec ./build/shell "$@"
+# exec ./your_program.sh "$@"
